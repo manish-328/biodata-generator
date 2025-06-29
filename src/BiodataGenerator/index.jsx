@@ -3,8 +3,11 @@ import { useState } from "react";
 import "./style.css";
 
 export default function BiodataGenerator() {
+  // All the data for the placeholders and handling of the data mapped to the placeholders for the previous appointments
+
+  const FIELD_LABELS = ["Sr", "Unit", "Appointment", "From", "To"];
   const [rows, setRows] = useState([
-    { field1: "", field2: "", field3: "", field4: "", field5: "" },
+    { sr: "", unit: "", appointment: "", from: "", to: "" },
   ]);
 
   const handleChange = (index, field, value) => {
@@ -14,10 +17,9 @@ export default function BiodataGenerator() {
   };
 
   const addRow = () => {
-    setRows([
-      ...rows,
-      { field1: "", field2: "", field3: "", field4: "", field5: "" },
-    ]);
+    const newRow = {};
+    FIELD_LABELS.forEach((label) => (newRow[label] = ""));
+    setRows([...rows, newRow]);
   };
 
   const removeRow = (index) => {
@@ -25,6 +27,28 @@ export default function BiodataGenerator() {
     updatedRows.splice(index, 1);
     setRows(updatedRows);
   };
+
+  //Handling data same as above for family particulars
+
+  const FAMILY_LABELS = [
+    "Sr",
+    "Name",
+    "Relation",
+    "Educational",
+    "Qualification",
+    "Occupation",
+  ];
+
+  const [family, setFamily] = useState([
+    {
+      Sr: "",
+      Name: "",
+      Relation: "",
+      Educational: "",
+      Qualification: "",
+      Occupation: "",
+    },
+  ]);
 
   return (
     <div className="container">
@@ -43,8 +67,10 @@ export default function BiodataGenerator() {
         <h2>3.Education Qualifications</h2>
         <input type="text" placeholder="Enter your educational qualification" />
 
+        {/* //added the table to add details of the appointments */}
+
+        <h2>4. Previous Appointments.</h2>
         <div style={{ padding: "20px" }}>
-          <h2>4. Previous Appointments.</h2>
           <form>
             {rows.map((row, index) => (
               <div
@@ -57,13 +83,15 @@ export default function BiodataGenerator() {
                   alignItems: "center",
                 }}
               >
-                {Object.keys(row).map((field, i) => (
+                {FIELD_LABELS.map((label, i) => (
                   <input
                     key={i}
                     type="text"
-                    placeholder={`Field ${i + 1}`}
-                    value={row[field]}
-                    onChange={(e) => handleChange(index, field, e.target.value)}
+                    placeholder={label}
+                    value={row[label]}
+                    onChange={(e) =>
+                      handleChange(rowIndex, label, e.target.value)
+                    }
                   />
                 ))}
                 <button
@@ -76,15 +104,27 @@ export default function BiodataGenerator() {
                     color: "red",
                   }}
                 >
-                  Delete Row
+                  Remove Appointment
                 </button>
               </div>
             ))}
             <button type="button" onClick={addRow}>
-              Add Row
+              Add appointment
             </button>
           </form>
         </div>
+
+        <h2>5. Courses</h2>
+        <input type="text" placeholder="Enter your course" />
+
+        <h2>6. Hobbies</h2>
+        <input type="text" placeholder="tell us about ur hobbies" />
+
+        <h2>7. Sports</h2>
+        <input type="text" placeholder="sports that u like" />
+
+        <h2>8. Family Particulars.</h2>
+        {/* Adding another table for the family details */}
       </form>
     </div>
   );
