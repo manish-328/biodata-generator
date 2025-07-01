@@ -203,8 +203,8 @@ export default function BiodataGenerator() {
           my schooling from #School, #School address. After completing my school
           education, I pursued #Higher Education from #College name . Following
           my graduation, I worked for #work experience as a #Designation at
-          #Firm Name. I joined the Indian Naval Academy on #Date of joining and
-          was part of the Academy Team Basketball at INA)"
+          #Firm Name. I joined #AcademyName on #Date of joining and
+          was part of the #Extra-curricular activities)"
           rows={1}
           style={{
             width: "100%",
