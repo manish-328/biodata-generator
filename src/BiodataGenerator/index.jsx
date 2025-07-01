@@ -34,8 +34,7 @@ export default function BiodataGenerator() {
     "Sr",
     "Name",
     "Relation",
-    "Educational",
-    "Qualification",
+    "Educational Qualification",
     "Occupation",
   ];
 
@@ -44,11 +43,28 @@ export default function BiodataGenerator() {
       Sr: "",
       Name: "",
       Relation: "",
-      Educational: "",
       Qualification: "",
       Occupation: "",
     },
   ]);
+
+  const handleFamilyChange = (index, field, value) => {
+    const updatedFamilyRows = [...family];
+    updatedFamilyRows[index][field] = value;
+    setFamily(updatedFamilyRows);
+  };
+
+  const addFamilyRow = () => {
+    const newFamilyRow = {};
+    FAMILY_LABELS.forEach((label) => (newFamilyRow[label] = ""));
+    setFamily([...family, newFamilyRow]);
+  };
+
+  const removeFamilyRow = (index) => {
+    const updatedFamilyRows = [...family];
+    updatedFamilyRows.splice(index, 1);
+    setFamily(updatedFamilyRows);
+  };
 
   return (
     <div className="container">
@@ -89,9 +105,7 @@ export default function BiodataGenerator() {
                     type="text"
                     placeholder={label}
                     value={row[label]}
-                    onChange={(e) =>
-                      handleChange(rowIndex, label, e.target.value)
-                    }
+                    onChange={(e) => handleChange(index, label, e.target.value)}
                   />
                 ))}
                 <button
@@ -125,6 +139,73 @@ export default function BiodataGenerator() {
 
         <h2>8. Family Particulars.</h2>
         {/* Adding another table for the family details */}
+
+        <div style={{ padding: "20px" }}>
+          <form>
+            {family.map((familyrow, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(5, 1fr)",
+                  gap: "10px",
+                  marginBottom: "10px",
+                  alignItems: "center",
+                }}
+              >
+                {FAMILY_LABELS.map((label, i) => (
+                  <input
+                    key={i}
+                    type="text"
+                    placeholder={label}
+                    value={familyrow[label]}
+                    onChange={(e) =>
+                      handleFamilyChange(index, label, e.target.value)
+                    }
+                  />
+                ))}
+                <button
+                  type="button"
+                  onClick={() => removeFamilyRow(index)}
+                  disabled={family.length === 1}
+                  style={{
+                    gridColumn: "span 5",
+                    marginTop: "5px",
+                    color: "red",
+                  }}
+                >
+                  Remove Member
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={addFamilyRow}>
+              Add Member
+            </button>
+          </form>
+        </div>
+
+        <h2>9.</h2>
+        <textarea
+          type="text"
+          placeholder="Add a brief note about you: 
+          For eg (I hail from #city,#state and completed
+          my schooling from #School, #School address. After completing my school
+          education, I pursued #Higher Education from #College name . Following
+          my graduation, I worked for #work experience as a #Designation at
+          #Firm Name. I joined the Indian Naval Academy on #Date of joining and
+          was part of the Academy Team Basketball at INA)"
+          rows={1}
+          style={{
+            width: "100%",
+            resize: "none",
+            overflow: "hidden",
+            fontSize: "16px",
+          }}
+          onInput={(e) => {
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
+          }}
+        ></textarea>
       </form>
     </div>
   );
