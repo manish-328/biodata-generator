@@ -4,7 +4,9 @@ import "./style.css";
 
 export default function BiodataGenerator() {
   // All the data for the placeholders and handling of the data mapped to the placeholders for the previous appointments
+  const [image, setImage] = useState(null);
 
+  //handling the rows for appointment
   const FIELD_LABELS = ["Sr", "Unit", "Appointment", "From", "To"];
   const [rows, setRows] = useState([
     { sr: "", unit: "", appointment: "", from: "", to: "" },
@@ -64,6 +66,15 @@ export default function BiodataGenerator() {
     const updatedFamilyRows = [...family];
     updatedFamilyRows.splice(index, 1);
     setFamily(updatedFamilyRows);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Generate a temporary URL to preview the image
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
   };
 
   return (
@@ -206,6 +217,24 @@ export default function BiodataGenerator() {
             e.target.style.height = `${e.target.scrollHeight}px`;
           }}
         ></textarea>
+
+        {/* upload image div */}
+
+        <div style={{ marginTop: "20px" }}>
+          <label>Upload your photo:</label>
+          <br />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+
+          {image && (
+            <div style={{ marginTop: "15px" }}>
+              <img
+                src={image}
+                alt="Uploaded Preview"
+                style={{ width: "200px", height: "auto", borderRadius: "8px" }}
+              />
+            </div>
+          )}
+        </div>
       </form>
     </div>
   );
